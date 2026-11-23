@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#000000">
+<title>Guadalupe Lezama Murcia</title>
+<link rel="icon" href="data:,">  <!-- sin ícono: evita que el navegador pida /favicon.ico y dé 404 -->
+<style>
+  html, body { margin: 0; height: 100%; background: #000; overflow: hidden; }
+  /* El video ocupa toda la pantalla visible (dvh descuenta las barras del navegador del celular) */
+  video {
+    position: fixed; inset: 0;
+    width: 100vw; height: 100vh; height: 100dvh;
+    object-fit: contain; background: #000;
+  }
+  #reproducir {
+    position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    width: 84px; height: 84px; border-radius: 50%; border: 0;
+    background: rgba(0,0,0,.45); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    display: grid; place-items: center; cursor: pointer;
+    box-shadow: 0 0 0 2px rgba(255,255,255,.85);
+  }
+  #reproducir svg { width: 34px; height: 34px; margin-left: 5px; fill: #fff; }
+  #reproducir[hidden] { display: none; }
+</style>
+</head>
+<body>
+  <!-- Sin "controls" al principio: así no aparecen dos botones de play a la vez.
+       Al primer toque se activan los controles nativos del teléfono, que son chicos y se ocultan solos. -->
+  <video id="video" src="video.mp4" poster="portada.jpg" playsinline preload="metadata"></video>
+  <button id="reproducir" aria-label="Reproducir video">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>
+  </button>
+<script>
+  const video = document.getElementById('video');
+  const boton = document.getElementById('reproducir');
+  // Reproducir con sonido solo funciona tras un toque del usuario (regla de iOS/Android);
+  // por eso no hay autoplay: el toque en el botón es el que habilita el audio.
+  boton.addEventListener('click', () => {
+    video.controls = true;
+    video.play();
+  });
+  video.addEventListener('play', () => { boton.hidden = true; });
+  video.addEventListener('ended', () => {
+    boton.hidden = false;
+    boton.setAttribute('aria-label', 'Ver de nuevo');
+  });
+</script>
+</body>
+</html>
